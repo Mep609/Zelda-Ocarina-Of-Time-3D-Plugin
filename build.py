@@ -37,7 +37,7 @@ LIBPATH 	= "-L ./lib "
 ARCH 		= " -march=armv6k -mlittle-endian -mtune=mpcore -mfloat-abi=hard "
 CFLAGS		= " -Os -c " + ARCH
 ASFLAGS		= " -Os -c -s " + ARCH
-LIBFLAGS 	= " -lntr -lShark2NTR_dev -lctr -lg -lsysbase -lc -lgcc "
+LIBFLAGS 	= " -lntr -lShark2NTR_dev_debug -lctr -lg -lsysbase -lc -lgcc "
 LDFLAGS		= " -pie --gc-sections -T 3ds.ld -Map=%s.map " % NAME
 INCLUDES 	= " -I Includes -I Sources -I Includes/libntrplg "
 CFILES		= allFolderFile(".\\Sources\\", ".c")
@@ -136,4 +136,10 @@ if (user == "yes" or user == "y"):
 else:
 	printf("As you want sir.\n");
 printf("Done, enjoy your plugin !\n\n");
+printf("#########################################################");
+printf("Remeber that it's the debug version that you've compiled.");
+printf("This version includes the Debug Menu.");
+printf("Press L + Start to pop it up");
+printf("#########################################################\n");
+
 
