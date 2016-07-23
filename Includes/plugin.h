@@ -6,6 +6,7 @@
 #include "result.h"
 #include "common.h"
 #include "hid.h"
+#include "debug.h"
 
 #define MAX(x, y) (x > y ? x : y)
 
@@ -151,6 +152,21 @@ void	set_note(const char *text, int index);
 ** Disable an entry
 */
 void    disableCheat(int index);
+/*
+** void new_log(int log_type, char *text, ...)
+** log_type can be INFO, WARNING, DEBUG, ERROR
+** text and ... are passed to vsnsprintf, so it takes the same args
+** Create a new log entry in the debug menu
+** If an error log is thrown, the debug menu will shows up on it's own
+*/
 void	new_log(int log_type, char *text, ...);
+
+/*
+** void register_callback(void *func)
+** func is a pointer to a function
+** func can be set to NULL to disable a previous registration
+** Register a function which will be executed every iteration of the main loop of the thread (defined by the speed selected)
+*/
+void	register_callback(void *func);
 
 #endif

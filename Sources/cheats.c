@@ -133,18 +133,17 @@ void	unlock_enhanced_defense(void)
 
 void	unlock_all_swords(void)
 {
-	new_log(INFO, "all_swords | before: "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(READU8(0x00587A0E)));
 	u32 backup = READU8(0x00587A0E);
+	
 	backup = backup & 0xf0;
 	backup = backup | 0x7;
 	WRITEU8(0x00587A0E, backup);
-	new_log(DEBUG, "all_swords | after: "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(READU8(0x00587A0E)));
 }
 
 void	trigger_swords(int x)
 {
-	new_log(INFO, "trigger_swords | before: "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(READU8(0x00587A0E)));
 	u32 backup = READU8(0x00587A0E);
+	
 	if(x == 0)
 		backup = (backup & 0xf0) | ((backup & 0xf) ^ 0b111);
 	if(x == 1)
@@ -154,12 +153,12 @@ void	trigger_swords(int x)
 	if(x == 3)
 		backup = (backup & 0xf0) | ((backup & 0xf) ^ 0b100);
 	WRITEU8(0x00587A0E, backup);
-	new_log(INFO, "trigger_swords | after: "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(READU8(0x00587A0E)));
 }
 
 void	trigger_shields(int x)
 {
 	u32 backup = READU8(0x00587A0E);
+	
 	if(x == 0)
 		backup = (backup & 0x0f) | ((backup & 0xf0) ^ (0b111 << 4));
 	if(x == 1)
@@ -174,6 +173,7 @@ void	trigger_shields(int x)
 void	unlock_all_shields(void)
 {
 	u32 backup = READU8(0x00587A0E);
+	
 	backup = backup & 0xf;
 	backup = backup | 0x70;
 	WRITEU8(0x00587A0E, backup);
@@ -187,6 +187,7 @@ void	unlock_all_suits(void)
 void	trigger_suits(int x)
 {
 	u32 backup = READU8(0x00587A0F);
+	
 	if(x == 0)
 		backup = (backup & 0xf0)| ((backup & 0xf) ^ 0b111);
 	if(x == 1)
@@ -231,46 +232,58 @@ void	giant_link(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x64;
 	WRITEU32(pointer, 0x3CA3D70A);
 	WRITEU32(pointer + 4, 0x3CA3D70A);
 	WRITEU32(pointer + 8, 0x3CA3D70A);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	normal_link(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x64;
 	WRITEU32(pointer, 0x3C23D70A);
 	WRITEU32(pointer + 4, 0x3C23D70A);
 	WRITEU32(pointer + 8, 0x3C23D70A);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	mini_link(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x64;
 	WRITEU32(pointer, 0x3B23D70A);
 	WRITEU32(pointer + 4, 0x3B23D70A);
 	WRITEU32(pointer + 8, 0x3B23D70A);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	paper_link(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x64;
 	WRITEU32(pointer, 0x3AD3D70A);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	moon_jump(void)
@@ -278,8 +291,7 @@ void	moon_jump(void)
 	u32	pointer = READU32(base_pointer);
 	static u32 active = 1;
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x77;	
 	if (is_pressed(DR))
 	{
@@ -288,7 +300,10 @@ void	moon_jump(void)
 	}
 	if (active && is_pressed(A))
 		WRITEU16(pointer, 0xCB40);
-	
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	move_fast(void)
@@ -298,8 +313,7 @@ void	move_fast(void)
 	static u32 active = 1;
 	static u32 jump = 0;
 	
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	jump_pointer = pointer + 0x77;
 	pointer += 0x222C;
 	if (is_pressed(DL))
@@ -320,6 +334,10 @@ void	move_fast(void)
 	}
 	else
 		jump = 0;
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	collect_heart(void)
@@ -336,57 +354,68 @@ void	spin_attack(void)
 {
 	u32	pointer = READU32(base_pointer);
 	
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x2252;
-	//new_log(DEBUG, "spin_attack | base_pointer = %08X", base_pointer);
 	WRITEU16(pointer, 0x3F80);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	sword_glitch(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x2237;
 	WRITEU8(pointer, 0x01);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	stick_fire(void)
 {
 	u32	pointer = READU32(base_pointer);
 
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x2258;
 	WRITEU8(pointer, 0xFF);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	epona_max_carrots(void)
 {
 	u32	pointer = READU32(base_pointer);
 	
-	if (pointer == 0)
-		return;
+	check_warning(pointer != 0, "Null pointer");
 	pointer += 0x134;
 	WRITEU8(pointer, 0x5);
+	return;
+error:
+	pause(1);
+	return;
 }
 
 
-void	unlock_kokiri_sword()
+void	unlock_kokiri_sword(void)
 {
 	trigger_swords(1);
 	disableCheat(33);
 }
 
-void	unlock_excalibur_sword()
+void	unlock_excalibur_sword(void)
 {
 	trigger_swords(2);
 	disableCheat(34);
 }
 
-void	unlock_biggoron_sword()
+void	unlock_biggoron_sword(void)
 {
 	trigger_swords(3);
 	disableCheat(35);
@@ -398,31 +427,31 @@ void	unlock_wood_shield()
 	disableCheat(36);
 }
 
-void	unlock_hyrule_shield()
+void	unlock_hyrule_shield(void)
 {
 	trigger_shields(2);
 	disableCheat(37);
 }
 
-void	unlock_mirror_shield()
+void	unlock_mirror_shield(void)
 {
 	trigger_shields(3);
 	disableCheat(38);
 }
 
-void	unlock_kokiri_suits()
+void	unlock_kokiri_suits(void)
 {
 	trigger_suits(1);
 	disableCheat(39);
 }
 
-void	unlock_zora_suits()
+void	unlock_zora_suits(void)
 {
 	trigger_suits(3);
 	disableCheat(41);
 }
 
-void	unlock_goron_suits()
+void	unlock_goron_suits(void)
 {
 	trigger_suits(2);
 	disableCheat(40);
@@ -460,8 +489,7 @@ void	epona_moon_jump(void)
 	u32	offset;
 
 	offset = READU32(base_pointer);
-	if (offset == 0)
-		return;
+	check_warning(offset != 0, "Null pointer");
 	offset += 0x134;
 	if (is_pressed( BUTTON_A + BUTTON_X ))
 	{
@@ -471,21 +499,27 @@ void	epona_moon_jump(void)
 			WRITEU16(0x00000066 + offset, 0x00004222 & 0xFFFF);
 		}
 	}
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	epona_infinite_carrots_all_areas(void)
 {
 	u32	offset;
 
-	offset = READU32(base_pointer);
-	if (offset == 0)
-		return;
+	check_warning(offset != 0, "Null pointer");
 	offset += 0x134;
 	if ( 0x00000000 != READU32(offset))
 	{
 		offset = READU32(offset);
 		WRITEU8(0x00000E9C + offset, 0x00000005 & 0xFF);
 	}
+	return;
+error:
+	pause(1);
+	return;
 }
 
 void	giants_knife_never_breaks(void)

@@ -126,7 +126,7 @@ printf("Creating the zip folder...");
 shutil.make_archive(NAME, 'zip', "./plugin");
 printf("Should I send the plugin on your console ?");
 user = raw_input(">");
-if (user == "yes" or user == "y"):
+if (user == "yes" or user == "y" or user == "YES" or user == "Y"):
 	print("");
 	printf("Got it !");
 	printf("Sending the plugin right now...\n");
@@ -137,7 +137,7 @@ else:
 	printf("As you want sir.\n");
 printf("Done, enjoy your plugin !\n\n");
 printf("#########################################################");
-printf("Remeber that it's the debug version that you've compiled.");
+printf("Remember that it's the debug version that you've compiled.");
 printf("This version includes the Debug Menu.");
 printf("Press L + Start to pop it up");
 printf("#########################################################\n");

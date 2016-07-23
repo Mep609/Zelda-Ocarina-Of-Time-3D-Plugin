@@ -1,6 +1,7 @@
 #include "cheats.h"
 #include "notes.h"
 #include <string.h>
+//#include "debug.h"
 
 void	my_menus(void)
 {
